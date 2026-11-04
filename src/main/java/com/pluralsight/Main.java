@@ -3,13 +3,14 @@ package com.pluralsight;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
         showHomescreen();
-
+        ArrayList<Transaction> transactions = new ArrayList<>();
 
 
 
@@ -44,14 +45,20 @@ public class Main {
     }
 
     private static void showAddDeposit(){
+
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+
+        String description = Console.promptForString("Description: ");
+        String vendor = Console.promptForString("Who depositing: ");
+        double amount = Console.promptForDouble("Enter the amount: ");
+
         try {
-            FileWriter writer = new FileWriter("DepositInfo.txt");
+
+            FileWriter writer = new FileWriter("transactions.csv", true);
             BufferedWriter bufWriter =new BufferedWriter(writer);
-            bufWriter.write(Console.promptForString(" Checking account or Saving account?:\n "));
-            bufWriter.newLine();
-            bufWriter.write(Console.promptForString(" Routing Number:\n "));
-            bufWriter.newLine();
-            bufWriter.write(Console.promptForString(" Account Number:\n "));
+
+            bufWriter.write("\n" + date + "|" + time + "|" + description + "|" + vendor + "|" + amount);
 
             bufWriter.close();
         } catch (IOException e) {
@@ -62,13 +69,13 @@ public class Main {
 
     private static void showMakePayment(){
         try {
-            FileWriter writer = new FileWriter("DepositInfo.txt");
+            FileWriter writer = new FileWriter("cardInfo.txt");
             BufferedWriter bufWriter =new BufferedWriter(writer);
-            bufWriter.write(Console.promptForString(" Checking account or Saving account?:\n "));
+            bufWriter.write("Card number: " + Console.promptForString("Enter your 16 digit card number:\n "));
             bufWriter.newLine();
-            bufWriter.write(Console.promptForString(" Routing Number:\n "));
+            bufWriter.write("expiration date: " + Console.promptForString("Expiration date:\n "));
             bufWriter.newLine();
-            bufWriter.write(Console.promptForString(" Account Number:\n "));
+            bufWriter.write("Security code: " + Console.promptForString("Security code:\n "));
 
             bufWriter.close();
         } catch (IOException e) {
