@@ -2,13 +2,16 @@ package com.pluralsight;
 
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
+
         showHomescreen();
         ArrayList<Transaction> transactions = new ArrayList<>();
 
@@ -19,7 +22,7 @@ public class Main {
     private static void showHomescreen(){
 
         String homeScreenMenuText = """
-                Hey (name) what would you like to do?
+                What would you like to do?
                 1 - Add Deposit
                 2 - Make Payment(Debit)
                 3 - Display ledger
@@ -36,7 +39,7 @@ public class Main {
                 case 1 -> showAddDeposit();
                 case 2 -> showMakePayment();
                 case 3 -> showLedger();
-                case 4 -> System.out.println("Goodbye!" + "name");
+                case 4 -> System.out.println("Goodbye!");
                 default -> System.out.println("Invalid command, please try again. ");
             }
         } while (choice != 4);
@@ -45,11 +48,12 @@ public class Main {
     }
 
     private static void showAddDeposit(){
-
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        DecimalFormat df = new DecimalFormat("0.00");
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
 
-        String description = Console.promptForString("Description: ");
+        String description = "Deposit";
         String vendor = Console.promptForString("Who depositing: ");
         double amount = Console.promptForDouble("Enter the amount: ");
 
@@ -58,7 +62,7 @@ public class Main {
             FileWriter writer = new FileWriter("transactions.csv", true);
             BufferedWriter bufWriter =new BufferedWriter(writer);
 
-            bufWriter.write("\n" + date + "|" + time + "|" + description + "|" + vendor + "|" + amount);
+            bufWriter.write("\n" + date + "|" + time.format(timeFormatter) + "|" + description + "|" + vendor + "|" + amount);
 
             bufWriter.close();
         } catch (IOException e) {
@@ -68,18 +72,26 @@ public class Main {
     }
 
     private static void showMakePayment(){
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        DecimalFormat df = new DecimalFormat("0.00");
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+
+        String description = Console.promptForString("What the payment for?: ");
+        String vendor = Console.promptForString("Who you paying? : ");
+        double amount = Console.promptForDouble("Enter the amount: ");
+
         try {
-            FileWriter writer = new FileWriter("cardInfo.txt");
-            BufferedWriter bufWriter =new BufferedWriter(writer);
-            bufWriter.write("Card number: " + Console.promptForString("Enter your 16 digit card number:\n "));
-            bufWriter.newLine();
-            bufWriter.write("expiration date: " + Console.promptForString("Expiration date:\n "));
-            bufWriter.newLine();
-            bufWriter.write("Security code: " + Console.promptForString("Security code:\n "));
+
+            FileWriter writer = new FileWriter("transactions.csv", true);
+            BufferedWriter bufWriter = new BufferedWriter(writer);
+
+            bufWriter.write("\n" + date + "|" + time.format(timeFormatter) + "|" + description + "|" + vendor + "|" +df.format(amount));
 
             bufWriter.close();
+            System.out.println("\n Payment successful");
         } catch (IOException e) {
-            System.out.println("couldn't write");
+            System.out.println("Couldn't send payment");
         }
 
     }
