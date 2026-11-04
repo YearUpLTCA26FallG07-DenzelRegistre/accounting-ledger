@@ -132,15 +132,16 @@ public class Main {
             bufferedReader.readLine();
 
             while ((line = bufferedReader.readLine())!= null){
+
+                String[] parts = line.split("\\|");
+
+                LocalDate date = LocalDate.parse(parts[0]);
+                LocalTime time = LocalTime.parse(parts[1]);
+                String description = parts[2];
+                String vendor = parts[3];
+                double amount = Double.parseDouble(parts[4]);
+
                 System.out.println(line);
-                //String[] parts = line.split("\\|");
-
-                //LocalDate date = LocalDate.parse(parts[0]);
-                //LocalTime time = LocalTime.parse(parts[1]);
-                //String description = parts[2];
-                //String vendor = parts[3];
-                //double amount = Double.parseDouble(parts[4]);
-
                 //Transactions T = new Transactions(date, time, description, vendor, amount);
                 //date|time|description|vendor|amount
                 //2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
