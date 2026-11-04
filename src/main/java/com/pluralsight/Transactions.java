@@ -10,10 +10,14 @@ public class Transactions {
     private String vendor;
     private double amount;
 
+
     public Transactions(LocalDate date, LocalTime time, String description, String vendor, double amount) {
         this.description = description;
+        this.date = date;
+        this.time = time;
         this.vendor = vendor;
         this.amount = amount;
+        return;
     }
 
     public String getDescription() {

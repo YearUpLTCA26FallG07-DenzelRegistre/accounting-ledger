@@ -1,14 +1,16 @@
 package com.pluralsight;
 
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
         showHomescreen();
+
+
 
 
     }
@@ -17,7 +19,7 @@ public class Main {
 
         String homeScreenMenuText = """
                 Hey (name) what would you like to do?
-                1 - Make Deposit
+                1 - Add Deposit
                 2 - Make Payment(Debit)
                 3 - Display ledger
                 4 - Quit Application
@@ -30,7 +32,7 @@ public class Main {
             choice = Console.promptForInt(homeScreenMenuText);
 
             switch (choice){
-                case 1 -> showMakeDeposit();
+                case 1 -> showAddDeposit();
                 case 2 -> showMakePayment();
                 case 3 -> showLedger();
                 case 4 -> System.out.println("Goodbye!" + "name");
@@ -41,12 +43,38 @@ public class Main {
 
     }
 
-    private static void showMakeDeposit(){
-        System.out.println("make Deposit");
+    private static void showAddDeposit(){
+        try {
+            FileWriter writer = new FileWriter("DepositInfo.txt");
+            BufferedWriter bufWriter =new BufferedWriter(writer);
+            bufWriter.write(Console.promptForString(" Checking account or Saving account?:\n "));
+            bufWriter.newLine();
+            bufWriter.write(Console.promptForString(" Routing Number:\n "));
+            bufWriter.newLine();
+            bufWriter.write(Console.promptForString(" Account Number:\n "));
+
+            bufWriter.close();
+        } catch (IOException e) {
+            System.out.println("couldn't write");
+        }
+
     }
 
     private static void showMakePayment(){
-        System.out.println("MakePayment");
+        try {
+            FileWriter writer = new FileWriter("DepositInfo.txt");
+            BufferedWriter bufWriter =new BufferedWriter(writer);
+            bufWriter.write(Console.promptForString(" Checking account or Saving account?:\n "));
+            bufWriter.newLine();
+            bufWriter.write(Console.promptForString(" Routing Number:\n "));
+            bufWriter.newLine();
+            bufWriter.write(Console.promptForString(" Account Number:\n "));
+
+            bufWriter.close();
+        } catch (IOException e) {
+            System.out.println("couldn't write");
+        }
+
     }
     private static void showLedger(){
 
@@ -113,7 +141,9 @@ public class Main {
         System.out.println("deposits");
     }
     private static void showPayments(){
-        System.out.println("Payments");
+        System.out.println("For Payments");
+
+
     }
 
 }
