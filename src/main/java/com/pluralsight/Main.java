@@ -54,7 +54,7 @@ public class Main {
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
 
-        String description = "Deposit";
+        String description = "Direct deposit";
         String vendor = Console.promptForString("Who depositing: ");
         double amount = Console.promptForDouble("Enter the amount: ");
 
@@ -66,6 +66,7 @@ public class Main {
             bufWriter.write("\n" + date + "|" + time.format(timeFormatter) + "|" + description + "|" + vendor + "|" + amount);
 
             bufWriter.close();
+            // deposit success
         } catch (IOException e) {
             System.out.println("couldn't write");
         }
@@ -125,7 +126,7 @@ public class Main {
 
     }
     private static void showReports(){
-
+        DateTimeFormatter timeFormatter2 = DateTimeFormatter.ofPattern("HH:mm:ss");
         transactions.clear();
 
         try {
@@ -158,7 +159,7 @@ public class Main {
 
             for (Transaction t : transactions) {
                 System.out.printf(
-                        "%s | %s | %s | %s | $%.2f%n",
+                        "%s  %s  %s  %s  $%.2f%n",
                         t.getDate(),
                         t.getTime(),
                         t.getDescription(),
@@ -171,13 +172,18 @@ public class Main {
             e.printStackTrace();
         }
 
+
+
+
+
+
     }
     private static void showAllEntries(){
         System.out.println("all entries");
     }
     private static void showDeposits(){
-        // if descripition is Deposits
-        // if amount
+
+
         System.out.println("deposits");
     }
     private static void showPayments(){

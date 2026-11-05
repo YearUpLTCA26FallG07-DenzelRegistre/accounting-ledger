@@ -61,13 +61,5 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public String toString() {
-        return "Transaction{" +
-                "Date='" + date + '\'' +
-                ", time='" + time + '\'' +
-                ", description=" + description +
-                ", vendor='" + vendor + '\'' +
-                ", amount='" + amount + '\'' +
-                '}';
-    }
+
 }
