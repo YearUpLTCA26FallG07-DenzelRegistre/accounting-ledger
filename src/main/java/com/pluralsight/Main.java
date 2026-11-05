@@ -9,15 +9,16 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import static java.time.LocalDate.parse;
+
 public class Main {
     public static void main(String[] args) {
 
         showHomescreen();
-        ArrayList<Transaction> transactions = new ArrayList<>();
-
-
 
     }
+    public static ArrayList<Transaction> transactions = new ArrayList<>() {
+    };
 
     private static void showHomescreen(){
 
@@ -124,6 +125,9 @@ public class Main {
 
     }
     private static void showReports(){
+
+        transactions.clear();
+
         try {
             FileReader fileReader = new FileReader("transactions.csv");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -141,23 +145,39 @@ public class Main {
                 String vendor = parts[3];
                 double amount = Double.parseDouble(parts[4]);
 
-                System.out.println(line);
-                //Transactions T = new Transactions(date, time, description, vendor, amount);
+                Transaction t = new Transaction(date , time , description , vendor , amount);
+
+
+                transactions.add(t);
+
                 //date|time|description|vendor|amount
                 //2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
                 //2023-04-15|11:15:00|Invoice 1001 paid|Joe|1500.00
-
             }
             bufferedReader.close();
 
+            for (Transaction t : transactions) {
+                System.out.printf(
+                        "%s | %s | %s | %s | $%.2f%n",
+                        t.getDate(),
+                        t.getTime(),
+                        t.getDescription(),
+                        t.getVendor(),
+                        t.getAmount()
+                );
+            }
+
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+
     }
     private static void showAllEntries(){
         System.out.println("all entries");
     }
     private static void showDeposits(){
+        // if descripition is Deposits
+        // if amount
         System.out.println("deposits");
     }
     private static void showPayments(){
