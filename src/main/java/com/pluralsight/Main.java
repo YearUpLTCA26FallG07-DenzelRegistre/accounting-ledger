@@ -183,8 +183,38 @@ public class Main {
     }
     private static void showDeposits(){
 
+        try {
+            FileReader fileReader = new FileReader("transactions.csv");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-        System.out.println("deposits");
+            String line;
+            bufferedReader.readLine();
+
+            while ((line = bufferedReader.readLine())!= null){
+
+                String[] parts = line.split("\\|");
+
+                LocalDate date = LocalDate.parse(parts[0]);
+                LocalTime time = LocalTime.parse(parts[1]);
+                String description = parts[2];
+                String vendor = parts[3];
+                double amount = Double.parseDouble(parts[4]);
+
+                if (amount > 0){
+                    System.out.printf(
+                            "%s | %s | %s | %s | $%.2f%n",
+                            date, time, description, vendor, amount
+                    );
+
+                }
+
+            }
+            bufferedReader.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private static void showPayments(){
         System.out.println("For Payments");
