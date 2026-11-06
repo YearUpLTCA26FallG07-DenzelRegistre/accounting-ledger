@@ -143,7 +143,7 @@ public class Main {
                 case 1 -> showMonthToDate();
                 case 2 -> showPreviousMonth();
                 case 3 -> showYearToDate();
-                case 4 -> 
+                case 4 -> showPreviousYear();
                 case 5 -> searchByVendor();
                 case 0 -> System.out.println("Going back to ledger. ");
                 default -> System.out.println("Invalid command, please try again. ");
@@ -232,14 +232,12 @@ public class Main {
         }
     }
     private static void showPayments(){
-        private static void showPayments() {
-
             try {
                 BufferedReader bufferedReader =
                         new BufferedReader(new FileReader("transactions.csv"));
 
                 String line;
-                bufferedReader.readLine(); // skip header
+                bufferedReader.readLine();
 
                 while ((line = bufferedReader.readLine()) != null) {
 
@@ -265,8 +263,33 @@ public class Main {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
 
+
+
+    }
+    private static void showMonthToDate() {
+        LocalDate today = LocalDate.now();
+        LocalDate start = today.withDayOfMonth(1);
+
+    }
+
+    private static void showPreviousMonth() {
+        LocalDate today = LocalDate.now();
+        LocalDate start = today.minusMonths(1).withDayOfMonth(1);
+        LocalDate end = today.withDayOfMonth(1).minusDays(1);
+
+    }
+
+    private static void showYearToDate() {
+        LocalDate today = LocalDate.now();
+        LocalDate start = LocalDate.of(today.getYear(), 1, 1);
+
+    }
+
+    private static void showPreviousYear() {
+        int lastYear = LocalDate.now().getYear() - 1;
+        LocalDate start = LocalDate.of(lastYear, 1, 1);
+        LocalDate end = LocalDate.of(lastYear, 12, 31);
 
     }
     private static void searchByVendor() {
@@ -282,4 +305,5 @@ public class Main {
         }
         if (!found) System.out.println("No transactions found for vendor: " + search);
     }
+
 }
