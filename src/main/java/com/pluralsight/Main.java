@@ -44,7 +44,7 @@ public class Main {
                 default -> System.out.println("Invalid command, please try again. ");
             }
         } while (choice != 4);
-        //Show account balance (extra)
+
 
     }
 
@@ -66,7 +66,7 @@ public class Main {
             bufWriter.write("\n" + date + "|" + time.format(timeFormatter) + "|" + description + "|" + vendor + "|" + amount);
 
             bufWriter.close();
-            System.out.println("Deposit Suc");
+            System.out.println("Deposit successful");
         } catch (IOException e) {
             System.out.println("couldn't write");
         }
@@ -294,16 +294,36 @@ public class Main {
     }
     private static void searchByVendor() {
 
-        String search = Console.promptForString("Enter vendor name: ");
+        String searchVendor =
+                Console.promptForString("Enter vendor name: ");
 
-        boolean found = false;
-        for (Transaction t : transactions) {
-            if (t.getVendor().toLowerCase().contains(search.toLowerCase())) {
-                System.out.println(t);
-                found = true;
+        try {
+            BufferedReader bufferedReader =
+                    new BufferedReader(new FileReader("transactions.csv"));
+
+            String line;
+            bufferedReader.readLine();
+
+            while ((line = bufferedReader.readLine()) != null) {
+
+                String[] parts = line.split("\\|");
+
+                String vendor = parts[3];
+
+                if (vendor.equalsIgnoreCase(searchVendor)) {
+
+                    System.out.printf(
+                            "%s | %s | %s | %s | $%.2f%n",
+                            parts[0], parts[1], parts[2], parts[3], Double.parseDouble(parts[4])
+                    );
+                }
             }
+
+            bufferedReader.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (!found) System.out.println("No transactions found for vendor: " + search);
     }
 
 }
