@@ -66,7 +66,7 @@ public class Main {
             bufWriter.write("\n" + date + "|" + time.format(timeFormatter) + "|" + description + "|" + vendor + "|" + amount);
 
             bufWriter.close();
-            // deposit success
+            System.out.println("Deposit Suc");
         } catch (IOException e) {
             System.out.println("couldn't write");
         }
@@ -79,7 +79,7 @@ public class Main {
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
 
-        String description = Console.promptForString("What the payment for?: ");
+        String description = "Payment";
         String vendor = Console.promptForString("Who you paying? : ");
         double amount = Console.promptForDouble("Enter the amount: ");
 
@@ -126,6 +126,32 @@ public class Main {
 
     }
     private static void showReports(){
+        String reportMenuText = """
+            Reports
+            1 - Month To Date
+            2 - Previous Month
+            3 - Year To Date
+            4 - Previous Year
+            5 - Search by Vendor
+            0 - Back to Ledger
+            """;
+
+        int choice3;
+        do {
+            choice3 = Console.promptForInt(reportMenuText);
+            switch (choice3){
+                case 1 -> showMonthToDate();
+                case 2 -> showPreviousMonth();
+                case 3 -> showYearToDate();
+                case 4 -> 
+                case 5 -> searchByVendor();
+                case 0 -> System.out.println("Going back to ledger. ");
+                default -> System.out.println("Invalid command, please try again. ");
+
+            }
+        } while (choice3 != 0);
+    }
+    private static void showAllEntries(){
         DateTimeFormatter timeFormatter2 = DateTimeFormatter.ofPattern("HH:mm:ss");
         transactions.clear();
 
@@ -151,20 +177,14 @@ public class Main {
 
                 transactions.add(t);
 
-                //date|time|description|vendor|amount
-                //2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
-                //2023-04-15|11:15:00|Invoice 1001 paid|Joe|1500.00
+
             }
             bufferedReader.close();
 
             for (Transaction t : transactions) {
                 System.out.printf(
                         "%s  %s  %s  %s  $%.2f%n",
-                        t.getDate(),
-                        t.getTime(),
-                        t.getDescription(),
-                        t.getVendor(),
-                        t.getAmount()
+                        t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount()
                 );
             }
 
@@ -175,11 +195,6 @@ public class Main {
 
 
 
-
-
-    }
-    private static void showAllEntries(){
-        System.out.println("all entries");
     }
     private static void showDeposits(){
 
@@ -217,9 +232,54 @@ public class Main {
         }
     }
     private static void showPayments(){
-        System.out.println("For Payments");
+        private static void showPayments() {
+
+            try {
+                BufferedReader bufferedReader =
+                        new BufferedReader(new FileReader("transactions.csv"));
+
+                String line;
+                bufferedReader.readLine(); // skip header
+
+                while ((line = bufferedReader.readLine()) != null) {
+
+                    String[] parts = line.split("\\|");
+
+                    LocalDate date = LocalDate.parse(parts[0]);
+                    LocalTime time = LocalTime.parse(parts[1]);
+                    String description = parts[2];
+                    String vendor = parts[3];
+                    double amount = Double.parseDouble(parts[4]);
+
+                    if (amount < 0) {
+
+                        System.out.printf(
+                                "%s | %s | %s | %s | $%.2f%n",
+                                date, time, description, vendor, amount
+                        );
+                    }
+                }
+
+                bufferedReader.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
 
     }
+    private static void searchByVendor() {
 
+        String search = Console.promptForString("Enter vendor name: ");
+
+        boolean found = false;
+        for (Transaction t : transactions) {
+            if (t.getVendor().toLowerCase().contains(search.toLowerCase())) {
+                System.out.println(t);
+                found = true;
+            }
+        }
+        if (!found) System.out.println("No transactions found for vendor: " + search);
+    }
 }
